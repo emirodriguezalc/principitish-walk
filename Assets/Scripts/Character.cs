@@ -54,7 +54,7 @@ public class Character : MonoBehaviour
     private bool tryingToJump;
     private bool gameStarted;
 
-    private float life;
+ /*    private float life;
     public float Life
     {
         get { return life; }
@@ -66,9 +66,9 @@ public class Character : MonoBehaviour
     {
         get { return oxygen; }
         private set { oxygen = value; }
-    }
+    } */
 
-    void OnCollisionEnter2D(Collision2D coll)
+    /* void OnCollisionEnter2D(Collision2D coll)
     {
         if (coll.relativeVelocity.magnitude >= Constants.FALL_DAMAGE_THRESHOLD)
         {
@@ -104,7 +104,7 @@ public class Character : MonoBehaviour
         {
             onTheGround = true;
         }
-    }
+    } */
 
     private void checkGroundStatus()
     {
@@ -165,12 +165,12 @@ public class Character : MonoBehaviour
 
     private void damage(float _damage)
     {
-        Life -= _damage;
+   /*      Life -= _damage;
         if (Life <= 0.0f)
         {
             Life = 0.0f;
             die();
-        }
+        } */
     }
 
     private IEnumerator notSlippingWait()
@@ -268,8 +268,8 @@ public class Character : MonoBehaviour
         notSlippingCoroutine = null;
         tryingToJump = false;
 
-        Life = 100.0f;
-        Oxygen = 100.0f;
+       /*  Life = 100.0f;
+        Oxygen = 100.0f; */
 
         gameStarted = false;
     }
@@ -348,8 +348,8 @@ public class Character : MonoBehaviour
 
         checkGroundStatus();
 
-        if (Life == 0.0f)
-            return;
+        /* if (Life == 0.0f)
+            return; */
 
         rigidBody.AddForce(rigidBody.mass * _gravity);
 
@@ -374,8 +374,8 @@ public class Character : MonoBehaviour
         if (!gameStarted)
             return;
 
-        if (Life == 0.0f)
-            return;
+      /*   if (Life == 0.0f)
+            return; */
 
 /*         float _jumpCommand = Input.GetAxis("Jump");
         if (_jumpCommand > 0.0f)
@@ -393,12 +393,12 @@ public class Character : MonoBehaviour
         else
             tryingToJump = false; */
 
-        Oxygen -= (Time.deltaTime * Constants.O2_PER_SECOND);
+        /* Oxygen -= (Time.deltaTime * Constants.O2_PER_SECOND);
         if (Oxygen <= 0.0f)
         {
             Oxygen = 0.0f;
             damage(Time.deltaTime * Constants.LIFE_WITH_NO_O2_PER_SECOND);
-        }
+        } */
 
         //oxygenGauge.setRemainingOxygen(Oxygen);
 
