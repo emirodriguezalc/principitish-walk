@@ -17,7 +17,7 @@ public class Character : MonoBehaviour
 
         public const float NOT_WALKING_THRESHOLD = 0.01f;
         public const float LEAVING_FLOOR_WAIT_TIME = 0.025f;
-        public const float NOT_SLIPPING_WAIT_TIME = 0.075f;
+        public const float NOT_SLIPPING_WAIT_TIME = 0f;
 
         public const float O2_PER_SECOND = 1.5f;
         public const float LIFE_WITH_NO_O2_PER_SECOND = 7.0f;
@@ -232,7 +232,7 @@ public class Character : MonoBehaviour
             return Vector2.zero;
 
         float _walkDirectionVectorMagnitude = _walkDirection.magnitude;
-        float _controllerDirection = Input.GetAxis("Horizontal");
+        float _controllerDirection = Input.GetAxisRaw("Horizontal");
         float _currentDirection = Vector3.Cross(rigidBody.velocity, upDirection).z < 0.0f ? -1.0f : 1.0f;
 
         float _walkForce;
