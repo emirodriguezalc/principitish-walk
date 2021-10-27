@@ -3,66 +3,71 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DialogManager : MonoBehaviour {
+public class DialogManager : MonoBehaviour
+{
 
-	public Text nameText;
-	public Text dialogText;
+    public Text nameText;
+    public Text dialogText;
 
-	public Animator animator;
+    public Animator animator;
 
-	private Queue<string> sentences;
+    private Queue<string> sentences;
 
-	// Use this for initialization
-	void Start () {
-		sentences = new Queue<string>();
-	}
+    // Use this for initialization
+    void Start()
+    {
+        sentences = new Queue<string>();
+    }
 
-	public void StartDialog (DialogClass dialog)
-	{
-		animator.SetBool("isOpen", true);
+    public void StartDialog(DialogClass dialog)
+    {
+        Character.playerControlsEnabled = false;
 
-		nameText.text = dialog.name;
+        animator.SetBool("isOpen", true);
 
-		sentences.Clear();
+        nameText.text = dialog.name;
 
-		foreach (string sentence in dialog.sentences)
-		{
-			sentences.Enqueue(sentence);
-		}
+        sentences.Clear();
 
-		DisplayNextSentence();
-	}
+        foreach (string sentence in dialog.sentences)
+        {
+            sentences.Enqueue(sentence);
+        }
 
-	public void DisplayNextSentence ()
-	{
-		if (sentences.Count == 0)
-		{
-			EndDialog();
-			return;
-		}
+        DisplayNextSentence();
+    }
 
-		string sentence = sentences.Dequeue();
+    public void DisplayNextSentence()
+    {
+        if (sentences.Count == 0)
+        {
+            EndDialog();
+            return;
+        }
 
-		//dialogText.text = sentence;
+        string sentence = sentences.Dequeue();
+
+        //dialogText.text = sentence;
 
 
-		StopAllCoroutines();
-		StartCoroutine(TypeSentence(sentence)); 
-	}
+        StopAllCoroutines();
+        StartCoroutine(TypeSentence(sentence));
+    }
 
-	IEnumerator TypeSentence (string sentence)
-	{
-		dialogText.text = "";
-		foreach (char letter in sentence.ToCharArray())
-		{
-			dialogText.text += letter;
-			yield return null;
-		}
-	}
+    IEnumerator TypeSentence(string sentence)
+    {
+        dialogText.text = "";
+        foreach (char letter in sentence.ToCharArray())
+        {
+            dialogText.text += letter;
+            yield return null;
+        }
+    }
 
-	void EndDialog()
-	{
-		animator.SetBool("isOpen", false);
-	}
+    void EndDialog()
+    {
+        animator.SetBool("isOpen", false);
+        Character.playerControlsEnabled = true;
+    }
 
 }

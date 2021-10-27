@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
-
+    public static bool playerControlsEnabled = true;
     private static class Constants
     {
         public const float WALK_FORCE = 20.0f;
@@ -38,8 +38,8 @@ public class Character : MonoBehaviour
     private static int SPACEMAN_SLIPPING_ANIM_HASH = Animator.StringToHash("Base Layer.SpacemanSlipping");
 
     private GameObject planet;
-/*     private OxygenGauge oxygenGauge; */
-/*     private LifeGauge lifeGauge; */
+    /*     private OxygenGauge oxygenGauge; */
+    /*     private LifeGauge lifeGauge; */
 
     private Rigidbody2D rigidBody;
     private Animator anim;
@@ -54,19 +54,19 @@ public class Character : MonoBehaviour
     private bool tryingToJump;
     private bool gameStarted;
 
- /*    private float life;
-    public float Life
-    {
-        get { return life; }
-        private set { life = value; }
-    }
+    /*    private float life;
+       public float Life
+       {
+           get { return life; }
+           private set { life = value; }
+       }
 
-    private float oxygen;
-    public float Oxygen
-    {
-        get { return oxygen; }
-        private set { oxygen = value; }
-    } */
+       private float oxygen;
+       public float Oxygen
+       {
+           get { return oxygen; }
+           private set { oxygen = value; }
+       } */
 
     /* void OnCollisionEnter2D(Collision2D coll)
     {
@@ -112,13 +112,13 @@ public class Character : MonoBehaviour
         {
             if (!anim.GetBool(ONTHEFLOOR_BOOL_HASH))
             {
-             /*    if (jumpForceCoroutine != null)
-                {
-                    StopCoroutine(jumpForceCoroutine);
-                    jumpForceCoroutine = null;
+                /*    if (jumpForceCoroutine != null)
+                   {
+                       StopCoroutine(jumpForceCoroutine);
+                       jumpForceCoroutine = null;
 
-                    anim.SetBool(JUMPING_BOOL_HASH, false);
-                } */
+                       anim.SetBool(JUMPING_BOOL_HASH, false);
+                   } */
 
                 anim.SetBool(ONTHEFLOOR_BOOL_HASH, true);
             }
@@ -144,15 +144,15 @@ public class Character : MonoBehaviour
         GameObject.Find("Canvas/Fade").GetComponent<FadeScript>().fadeOut("Win");
     }
 
-     private void die()
+    private void die()
     {
-      //  Life = 0.0f;
+        //  Life = 0.0f;
 
-       // lifeGauge.setRemainingLife(Life);
+        // lifeGauge.setRemainingLife(Life);
 
         anim.SetTrigger(DIE_TRIGGER_HASH);
     }
- 
+
     public void commitDeath()
     {
         GameObject.Find("Canvas/Fade").GetComponent<FadeScript>().fadeOut("Main");
@@ -165,12 +165,12 @@ public class Character : MonoBehaviour
 
     private void damage(float _damage)
     {
-   /*      Life -= _damage;
-        if (Life <= 0.0f)
-        {
-            Life = 0.0f;
-            die();
-        } */
+        /*      Life -= _damage;
+             if (Life <= 0.0f)
+             {
+                 Life = 0.0f;
+                 die();
+             } */
     }
 
     private IEnumerator notSlippingWait()
@@ -256,20 +256,20 @@ public class Character : MonoBehaviour
     void Awake()
     {
         planet = GameObject.Find("Planet");
-     /*    oxygenGauge = GameObject.Find("Canvas/OxygenGauge").GetComponent<OxygenGauge>();
-        lifeGauge = GameObject.Find("Canvas/LifeGauge").GetComponent<LifeGauge>(); */
+        /*    oxygenGauge = GameObject.Find("Canvas/OxygenGauge").GetComponent<OxygenGauge>();
+           lifeGauge = GameObject.Find("Canvas/LifeGauge").GetComponent<LifeGauge>(); */
 
         rigidBody = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         sprite = transform.Find("CharacterV").gameObject;
 
-       // jumpForceCoroutine = null;
+        // jumpForceCoroutine = null;
         notOnTheFloorCoroutine = null;
         notSlippingCoroutine = null;
         tryingToJump = false;
 
-       /*  Life = 100.0f;
-        Oxygen = 100.0f; */
+        /*  Life = 100.0f;
+         Oxygen = 100.0f; */
 
         gameStarted = false;
     }
@@ -356,13 +356,16 @@ public class Character : MonoBehaviour
         if (!gameStarted)
             return;
 
-        Vector3 _walkVector = Vector3.Cross(Vector3.back, _direction).normalized;
-        Vector2 _walkDirection = new Vector2(_walkVector.x, _walkVector.y);
+        if (playerControlsEnabled)
+        {
+            Vector3 _walkVector = Vector3.Cross(Vector3.back, _direction).normalized;
+            Vector2 _walkDirection = new Vector2(_walkVector.x, _walkVector.y);
 
-        Vector2 _walkForce = getWalkForce(_walkDirection);
-        rigidBody.AddForce(_walkForce);
+            Vector2 _walkForce = getWalkForce(_walkDirection);
+            rigidBody.AddForce(_walkForce);
 
-        anim.SetBool(WALKING_BOOL_HASH, _walkForce.magnitude >= Constants.NOT_WALKING_THRESHOLD);
+            anim.SetBool(WALKING_BOOL_HASH, _walkForce.magnitude >= Constants.NOT_WALKING_THRESHOLD);
+        }
 
         // Reset slope normal
         slopeNormal = Vector2.zero;
@@ -374,24 +377,24 @@ public class Character : MonoBehaviour
         if (!gameStarted)
             return;
 
-      /*   if (Life == 0.0f)
-            return; */
+        /*   if (Life == 0.0f)
+              return; */
 
-/*         float _jumpCommand = Input.GetAxis("Jump");
-        if (_jumpCommand > 0.0f)
-        {
-            if (!tryingToJump)
-            {
-                if (anim.GetBool(ONTHEFLOOR_BOOL_HASH))
+        /*         float _jumpCommand = Input.GetAxis("Jump");
+                if (_jumpCommand > 0.0f)
                 {
-                    if (jumpForceCoroutine == null)
-                        jumpForceCoroutine = StartCoroutine(jumpForce());
+                    if (!tryingToJump)
+                    {
+                        if (anim.GetBool(ONTHEFLOOR_BOOL_HASH))
+                        {
+                            if (jumpForceCoroutine == null)
+                                jumpForceCoroutine = StartCoroutine(jumpForce());
+                        }
+                        tryingToJump = true;
+                    }
                 }
-                tryingToJump = true;
-            }
-        }
-        else
-            tryingToJump = false; */
+                else
+                    tryingToJump = false; */
 
         /* Oxygen -= (Time.deltaTime * Constants.O2_PER_SECOND);
         if (Oxygen <= 0.0f)
@@ -402,6 +405,6 @@ public class Character : MonoBehaviour
 
         //oxygenGauge.setRemainingOxygen(Oxygen);
 
-/*         lifeGauge.setRemainingLife(Life); */
+        /*         lifeGauge.setRemainingLife(Life); */
     }
 }
