@@ -8,10 +8,6 @@ public class Character : MonoBehaviour
     private static class Constants
     {
         public const float WALK_FORCE = 20.0f;
-        /* 	public const float JUMP_FORCE = 0.2f;
-            public const float JUMP_FORCE_DEGRADATION_TIME = 0.5f;
-            public const float JUMP_FORCE_DEGRADATION_TIME_INVERSE = 1.0f / JUMP_FORCE_DEGRADATION_TIME;
-     */
         public const float MAX_LINEAR_VELOCITY = 10.0f;
         public const float MAX_LINEAR_VELOCITY_INVERSE = 1.0f / MAX_LINEAR_VELOCITY;
 
@@ -38,9 +34,6 @@ public class Character : MonoBehaviour
     private static int SPACEMAN_SLIPPING_ANIM_HASH = Animator.StringToHash("Base Layer.SpacemanSlipping");
 
     private GameObject planet;
-    /*     private OxygenGauge oxygenGauge; */
-    /*     private LifeGauge lifeGauge; */
-
     private Rigidbody2D rigidBody;
     private Animator anim;
     private GameObject sprite;
@@ -53,73 +46,12 @@ public class Character : MonoBehaviour
     private Coroutine notSlippingCoroutine;
     private bool tryingToJump;
     private bool gameStarted;
-
-    /*    private float life;
-       public float Life
-       {
-           get { return life; }
-           private set { life = value; }
-       }
-
-       private float oxygen;
-       public float Oxygen
-       {
-           get { return oxygen; }
-           private set { oxygen = value; }
-       } */
-
-    /* void OnCollisionEnter2D(Collision2D coll)
-    {
-        if (coll.relativeVelocity.magnitude >= Constants.FALL_DAMAGE_THRESHOLD)
-        {
-            damage(Constants.FALL_DAMAGE);
-        }
-
-        if (coll.gameObject.tag == "Deadly")
-        {
-            die();
-        }
-        else if (coll.gameObject.tag == "Spaceship")
-        {
-            win();
-        }
-    }
-
-    void OnCollisionStay2D(Collision2D coll)
-    {
-        if (coll.gameObject.tag == "Rock")
-            return;
-
-        foreach (var _contactPoint in coll.contacts)
-        {
-            slopeNormal += _contactPoint.normal;
-        }
-    }
-
-    void OnTriggerStay2D(Collider2D coll)
-    {
-        if (coll.gameObject.tag != "Deadly"
-            && coll.gameObject.tag != "Spaceship"
-            && coll.gameObject.tag != "Hill")
-        {
-            onTheGround = true;
-        }
-    } */
-
     private void checkGroundStatus()
     {
         if (onTheGround)
         {
             if (!anim.GetBool(ONTHEFLOOR_BOOL_HASH))
             {
-                /*    if (jumpForceCoroutine != null)
-                   {
-                       StopCoroutine(jumpForceCoroutine);
-                       jumpForceCoroutine = null;
-
-                       anim.SetBool(JUMPING_BOOL_HASH, false);
-                   } */
-
                 anim.SetBool(ONTHEFLOOR_BOOL_HASH, true);
             }
 
@@ -146,10 +78,6 @@ public class Character : MonoBehaviour
 
     private void die()
     {
-        //  Life = 0.0f;
-
-        // lifeGauge.setRemainingLife(Life);
-
         anim.SetTrigger(DIE_TRIGGER_HASH);
     }
 
@@ -165,12 +93,7 @@ public class Character : MonoBehaviour
 
     private void damage(float _damage)
     {
-        /*      Life -= _damage;
-             if (Life <= 0.0f)
-             {
-                 Life = 0.0f;
-                 die();
-             } */
+
     }
 
     private IEnumerator notSlippingWait()
@@ -191,34 +114,6 @@ public class Character : MonoBehaviour
 
         notOnTheFloorCoroutine = null;
     }
-
-    /* private IEnumerator jumpForce()
-    {
-        float _jumpCommand;
-        float _elapsedTime = 0.0f;
-
-        anim.SetBool(JUMPING_BOOL_HASH, true);
-        do
-        {
-            _elapsedTime += Time.deltaTime;
-            _jumpCommand = Input.GetAxis("Jump");
-            Vector3 _direction = (transform.position - planet.transform.position).normalized;
-
-            if (_elapsedTime > Constants.JUMP_FORCE_DEGRADATION_TIME)
-                break;
-
-            float _jumpForceFactor = (Constants.JUMP_FORCE_DEGRADATION_TIME - _elapsedTime) * Constants.JUMP_FORCE_DEGRADATION_TIME_INVERSE;
-            float _jumpForce = Constants.JUMP_FORCE * _jumpForceFactor;
-
-            rigidBody.AddForce(_direction * (_jumpCommand * _jumpForce * rigidBody.mass), ForceMode2D.Impulse);
-
-            yield return null;
-        } while (_jumpCommand > 0.0f);
-
-        anim.SetBool(JUMPING_BOOL_HASH, false);
-        jumpForceCoroutine = null;
-    } */
-
     private static Vector2 projectVector(Vector2 _source, Vector2 _dst)
     {
         float _dstMagnitude = _dst.magnitude;
@@ -256,8 +151,6 @@ public class Character : MonoBehaviour
     void Awake()
     {
         planet = GameObject.Find("Planet");
-        /*    oxygenGauge = GameObject.Find("Canvas/OxygenGauge").GetComponent<OxygenGauge>();
-           lifeGauge = GameObject.Find("Canvas/LifeGauge").GetComponent<LifeGauge>(); */
 
         rigidBody = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
@@ -267,9 +160,6 @@ public class Character : MonoBehaviour
         notOnTheFloorCoroutine = null;
         notSlippingCoroutine = null;
         tryingToJump = false;
-
-        /*  Life = 100.0f;
-         Oxygen = 100.0f; */
 
         gameStarted = false;
     }
@@ -348,9 +238,6 @@ public class Character : MonoBehaviour
 
         checkGroundStatus();
 
-        /* if (Life == 0.0f)
-            return; */
-
         rigidBody.AddForce(rigidBody.mass * _gravity);
 
         if (!gameStarted)
@@ -376,35 +263,5 @@ public class Character : MonoBehaviour
     {
         if (!gameStarted)
             return;
-
-        /*   if (Life == 0.0f)
-              return; */
-
-        /*         float _jumpCommand = Input.GetAxis("Jump");
-                if (_jumpCommand > 0.0f)
-                {
-                    if (!tryingToJump)
-                    {
-                        if (anim.GetBool(ONTHEFLOOR_BOOL_HASH))
-                        {
-                            if (jumpForceCoroutine == null)
-                                jumpForceCoroutine = StartCoroutine(jumpForce());
-                        }
-                        tryingToJump = true;
-                    }
-                }
-                else
-                    tryingToJump = false; */
-
-        /* Oxygen -= (Time.deltaTime * Constants.O2_PER_SECOND);
-        if (Oxygen <= 0.0f)
-        {
-            Oxygen = 0.0f;
-            damage(Time.deltaTime * Constants.LIFE_WITH_NO_O2_PER_SECOND);
-        } */
-
-        //oxygenGauge.setRemainingOxygen(Oxygen);
-
-        /*         lifeGauge.setRemainingLife(Life); */
     }
 }
