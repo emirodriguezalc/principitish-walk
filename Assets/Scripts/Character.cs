@@ -30,14 +30,14 @@ public class Character : MonoBehaviour
 
     }
 
-    private static int ONTHEFLOOR_BOOL_HASH = Animator.StringToHash("OnTheFloor");
-    private static int WALKING_BOOL_HASH = Animator.StringToHash("Walking");
-    private static int JUMPING_BOOL_HASH = Animator.StringToHash("Jumping");
-    private static int SLIPPING_BOOL_HASH = Animator.StringToHash("Slipping");
-    private static int DIE_TRIGGER_HASH = Animator.StringToHash("Die");
-    private static int LOOKINGLEFT_TRIGGER_HASH = Animator.StringToHash("LookingLeft");
+    /*   private static int ONTHEFLOOR_BOOL_HASH = Animator.StringToHash("OnTheFloor");
+      private static int WALKING_BOOL_HASH = Animator.StringToHash("Walking");
+      private static int JUMPING_BOOL_HASH = Animator.StringToHash("Jumping");
+      private static int SLIPPING_BOOL_HASH = Animator.StringToHash("Slipping");
+      private static int DIE_TRIGGER_HASH = Animator.StringToHash("Die");
+      private static int LOOKINGLEFT_TRIGGER_HASH = Animator.StringToHash("LookingLeft");
 
-    private static int SPACEMAN_SLIPPING_ANIM_HASH = Animator.StringToHash("Base Layer.SpacemanSlipping");
+      private static int SPACEMAN_SLIPPING_ANIM_HASH = Animator.StringToHash("Base Layer.SpacemanSlipping"); */
 
     private GameObject planet;
     /*     private OxygenGauge oxygenGauge; */
@@ -52,9 +52,10 @@ public class Character : MonoBehaviour
     private bool onTheGround;
     //private Coroutine jumpForceCoroutine;
     private Coroutine notOnTheFloorCoroutine;
-    private Coroutine notSlippingCoroutine;
-    private bool tryingToJump;
-    private bool gameStarted;
+    /*     private Coroutine notSlippingCoroutine;
+     */
+/*     private bool tryingToJump;
+ */    private bool gameStarted;
 
     /*    private float life;
        public float Life
@@ -112,18 +113,18 @@ public class Character : MonoBehaviour
     {
         if (onTheGround)
         {
-            if (!anim.GetBool(ONTHEFLOOR_BOOL_HASH))
-            {
-                /*    if (jumpForceCoroutine != null)
-                   {
-                       StopCoroutine(jumpForceCoroutine);
-                       jumpForceCoroutine = null;
+            /*   if (!anim.GetBool(ONTHEFLOOR_BOOL_HASH))
+              {
+                     if (jumpForceCoroutine != null)
+                     {
+                         StopCoroutine(jumpForceCoroutine);
+                         jumpForceCoroutine = null;
 
-                       anim.SetBool(JUMPING_BOOL_HASH, false);
-                   } */
+                         anim.SetBool(JUMPING_BOOL_HASH, false);
+                     } 
 
-                anim.SetBool(ONTHEFLOOR_BOOL_HASH, true);
-            }
+                  anim.SetBool(ONTHEFLOOR_BOOL_HASH, true);
+              } */
 
             if (notOnTheFloorCoroutine != null)
             {
@@ -152,7 +153,7 @@ public class Character : MonoBehaviour
 
         // lifeGauge.setRemainingLife(Life);
 
-        anim.SetTrigger(DIE_TRIGGER_HASH);
+        //anim.SetTrigger(DIE_TRIGGER_HASH);
     }
 
     public void commitDeath()
@@ -179,9 +180,10 @@ public class Character : MonoBehaviour
     {
         yield return new WaitForSeconds(Constants.NOT_SLIPPING_WAIT_TIME);
 
-        anim.SetBool(SLIPPING_BOOL_HASH, false);
+        // anim.SetBool(SLIPPING_BOOL_HASH, false);
 
-        notSlippingCoroutine = null;
+        /*         notSlippingCoroutine = null;
+         */
     }
 
     private IEnumerator leavingFloorWait()
@@ -189,7 +191,7 @@ public class Character : MonoBehaviour
 
         yield return new WaitForSeconds(Constants.LEAVING_FLOOR_WAIT_TIME);
 
-        anim.SetBool(ONTHEFLOOR_BOOL_HASH, false);
+        // anim.SetBool(ONTHEFLOOR_BOOL_HASH, false);
 
         notOnTheFloorCoroutine = null;
     }
@@ -230,8 +232,8 @@ public class Character : MonoBehaviour
 
     private Vector2 getWalkForce(Vector2 _walkDirection)
     {
-        if (anim.GetBool(SLIPPING_BOOL_HASH))
-            return Vector2.zero;
+        /*   if (anim.GetBool(SLIPPING_BOOL_HASH))
+              return Vector2.zero; */
 
         float _walkDirectionVectorMagnitude = _walkDirection.magnitude;
         float _controllerDirection = Input.GetAxis("Horizontal");
@@ -267,8 +269,8 @@ public class Character : MonoBehaviour
 
         // jumpForceCoroutine = null;
         notOnTheFloorCoroutine = null;
-        notSlippingCoroutine = null;
-        tryingToJump = false;
+        /*         notSlippingCoroutine = null;
+        /*        tryingToJump = false; */
 
         /*  Life = 100.0f;
          Oxygen = 100.0f; */
@@ -276,44 +278,8 @@ public class Character : MonoBehaviour
         gameStarted = false;
     }
 
-    private bool updateSlipping()
-    {
-        bool _condition = (slopeNormal != Vector2.zero && (Vector2.Angle(upDirection, slopeNormal) > Constants.MAX_SLOPE_VERTICAL_ANGLE_TO_WALK));
-        bool _previousValue = anim.GetBool(SLIPPING_BOOL_HASH);
 
-        if (_condition)
-        {
-            if (notSlippingCoroutine != null)
-            {
-                StopCoroutine(notSlippingCoroutine);
-                notSlippingCoroutine = null;
-            }
-
-            {
-                anim.SetBool(
-                    SLIPPING_BOOL_HASH,
-                    _condition
-                );
-
-                if (Vector3.Cross(upDirection, slopeNormal).z > 0.0f)
-                    lookLeft();
-                else
-                    lookRight();
-            }
-
-            return true;
-        }
-        else if (notSlippingCoroutine == null && _previousValue)
-        {   // Just stopped slipping
-            notSlippingCoroutine = StartCoroutine(notSlippingWait());
-
-            return true;
-        }
-
-        return anim.GetCurrentAnimatorStateInfo(0).fullPathHash == SPACEMAN_SLIPPING_ANIM_HASH;
-    }
-
-    private void lookLeft()
+    /* private void lookLeft()
     {
         anim.SetBool(LOOKINGLEFT_TRIGGER_HASH, true);
     }
@@ -321,7 +287,7 @@ public class Character : MonoBehaviour
     private void lookRight()
     {
         anim.SetBool(LOOKINGLEFT_TRIGGER_HASH, false);
-    }
+    } */
 
     void FixedUpdate()
     {
@@ -338,15 +304,14 @@ public class Character : MonoBehaviour
             transform.Find("CollisionArrow").localRotation = Quaternion.LookRotation(Vector3.forward, _localSlopeNormal);
         }
 
-        if (!updateSlipping())
-        {
-            // Invert the character if needed
-            float _horizontalAxis = Input.GetAxis("Horizontal");
-            if (_horizontalAxis < 0.0f)
-                lookLeft();
-            else if (_horizontalAxis > 0.0f)
-                lookRight();
-        }
+
+        // Invert the character if needed
+        float _horizontalAxis = Input.GetAxis("Horizontal");
+        /*          if (_horizontalAxis < 0.0f)
+                     lookLeft();
+                 else if (_horizontalAxis > 0.0f)
+                     lookRight(); */
+
 
         checkGroundStatus();
 
@@ -374,7 +339,7 @@ public class Character : MonoBehaviour
             {
                 gameObject.GetComponent<Animator>().SetBool("isMoving", false);
             }
-            anim.SetBool(WALKING_BOOL_HASH, _walkForce.magnitude >= Constants.NOT_WALKING_THRESHOLD);
+            //anim.SetBool(WALKING_BOOL_HASH, _walkForce.magnitude >= Constants.NOT_WALKING_THRESHOLD);
         }
 
         if (_walkForce.magnitude <= Constants.NOT_WALKING_THRESHOLD)
