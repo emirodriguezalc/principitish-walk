@@ -8,7 +8,7 @@ public class Character : MonoBehaviour
 
     private static class Constants
     {
-        public const float WALK_FORCE = 20.0f;
+        public const float WALK_FORCE = 200.0f;
         public const float MAX_LINEAR_VELOCITY = 10.0f;
         public const float MAX_LINEAR_VELOCITY_INVERSE = 1.0f / MAX_LINEAR_VELOCITY;
 
