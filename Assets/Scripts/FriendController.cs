@@ -5,9 +5,14 @@ using UnityEngine;
 public class FriendController : MonoBehaviour
 {
     public DialogClass dialog;
+    private bool triggered = false;
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        TriggerDialogue();
+        if (!triggered)
+        {
+            triggered = true;
+            TriggerDialogue();
+        }
     }
 
     public void TriggerDialogue()

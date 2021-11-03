@@ -44,12 +44,15 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: Default
-    uniqueID: 0
+  - name: Background
+    uniqueID: 2846559175
     locked: 0
   - name: PlanetLayer
     uniqueID: 503492923
     locked: 0
   - name: DialogLayer
     uniqueID: 2970300157
+    locked: 0
+  - name: Default
+    uniqueID: 0
     locked: 0
